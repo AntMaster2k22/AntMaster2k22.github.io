@@ -2,110 +2,110 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AI Hustle Hub</title>
-  <meta name="description" content="Unlock AI-powered services to boost productivity, create killer content, and automate your daily grind. Fast, reliable, and tailored just for you.">
-  <meta name="keywords" content="AI services, automation, content creation, productivity, AI consulting">
-  <!-- Structured Data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "AI Hustle Hub",
-    "url": "https://yourusername.github.io/your-repo",
-    "logo": "https://yourusername.github.io/your-repo/logo.png",
-    "sameAs": []
-  }
-  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AI Hustle Hub offers AI-powered content creation, automation tools, and consulting to boost your business productivity.">
+  <meta name="keywords" content="AI services, content creation, automation, AI consulting, business productivity, small business AI">
+  <meta name="author" content="AI Hustle Hub">
+  <title>AI Hustle Hub - Boost Your Business with AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
   <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXXXXXX-X"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXX-Y"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);} gtag('js', new Date());
-    gtag('config', 'UA-XXXXXXXXX-X');
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-XXXXX-Y'); // Replace UA-XXXXX-Y with your Google Analytics ID
   </script>
-  <style>
-    body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #121212; color: #e0e0e0; }
-    header, main, footer { padding: 20px; max-width: 960px; margin: auto; }
-    header { text-align: center; }
-    h1 { font-size: 3rem; color: #00ff99; text-shadow: 0 0 10px #00ff99; }
-    p.lead { font-size: 1.25rem; color: #b0f2c7; }
-    .btn { background: #00ff99; border: none; padding: 1rem 2.5rem; font-size: 1.2rem; font-weight: bold; color: #121212; border-radius: 30px; cursor: pointer; box-shadow: 0 0 15px #00ff99; transition: background 0.3s, box-shadow 0.3s; text-decoration: none; display: inline-block; }
-    .btn:hover { background: #00cc77; box-shadow: 0 0 25px #00cc77; }
-    section { margin: 60px 0; }
-    .services { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
-    .service-card { background: #1f1f1f; padding: 20px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.5); }
-    .testimonials, .faq { background: #1f1f1f; padding: 20px; border-radius: 12px; }
-    footer { text-align: center; font-size: 0.9rem; color: #888; }
-    @media (max-width: 480px) { h1 { font-size: 2.2rem; } p.lead { font-size: 1rem; } }
-  </style>
 </head>
 <body>
-  <!-- Chat Widget (e.g., Tawk.to) -->
-  <script type="text/javascript">
-    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-    (function(){
-      var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-      s1.async=true;
-      s1.src='https://embed.tawk.to/YOUR_TAWK_ID/default';
-      s1.charset='UTF-8';
-      s1.setAttribute('crossorigin','*');
-      s0.parentNode.insertBefore(s1,s0);
-    })();
-  </script>
-
   <header>
     <h1>AI Hustle Hub</h1>
-    <p class="lead">Unlock the power of AI to boost your productivity, create killer content, and automate your daily grind. Fast, reliable, and tailored just for you — no tech headaches, just results.</p>
-    <a href="#email-capture" class="btn">Let’s Hustle</a>
+    <nav>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
   </header>
 
   <main>
-    <!-- Services Section -->
+    <section id="home" class="hero">
+      <h2>Unlock the Power of AI</h2>
+      <p>Boost your productivity, create killer content, and automate your daily grind. Fast, reliable, and tailored just for you—no tech headaches, just results.</p>
+      <a href="#contact" class="btn">Let’s Hustle</a>
+    </section>
+
     <section id="services">
       <h2>Our AI-Powered Services</h2>
-      <div class="services">
-        <div class="service-card">
+      <div class="cards">
+        <div class="card">
+          <img src="https://source.unsplash.com/200x200/?content" alt="Content Creation">
           <h3>Content Creation</h3>
           <p>Blog posts, social media copy, ebooks—delivered at AI-speed.</p>
+          <a href="#contact" class="btn">Get Started</a>
         </div>
-        <div class="service-card">
+        <div class="card">
+          <img src="https://source.unsplash.com/200x200/?automation" alt="Automation Tools">
           <h3>Automation Tools</h3>
           <p>Scripts and workflows to streamline your daily routines.</p>
+          <a href="#contact" class="btn">Get Started</a>
         </div>
-        <div class="service-card">
+        <div class="card">
+          <img src="https://source.unsplash.com/200x200/?consulting" alt="AI Consulting">
           <h3>AI Consulting</h3>
           <p>Strategy sessions to integrate AI into your business model.</p>
+          <a href="#contact" class="btn">Get Started</a>
         </div>
       </div>
     </section>
 
-    <!-- Email Capture -->
-    <section id="email-capture">
+    <section id="about">
+      <h2>About AI Hustle Hub</h2>
+      <p>We’re a team passionate about empowering entrepreneurs with AI tools to save time and scale fast. Founded in 2025, we’re here to simplify your hustle.</p>
+    </section>
+
+    <section id="contact">
       <h2>Stay in the Loop</h2>
-      <!-- Google Forms Embed -->
-      <iframe src="https://docs.google.com/forms/d/e/YOUR_FORM_ID/viewform?embedded=true" width="100%" height="500" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+      <form action="https://formspree.io/f/your-form-id" method="POST">
+        <input type="email" name="email" placeholder="Your Email" required>
+        <button type="submit" class="btn">Join Now</button>
+      </form>
     </section>
 
-    <!-- Testimonials / Social Proof -->
-    <section id="testimonials" class="testimonials">
+    <section id="testimonials">
       <h2>What Our Clients Say</h2>
-      <blockquote>“AI Hustle Hub completely transformed our content pipeline—more output, less stress.”<br>— Jamie R., Marketing Lead</blockquote>
-      <blockquote>“Automated workflows saved us hours every week. Highly recommend!”<br>— Alex T., Startup Founder</blockquote>
+      <div class="testimonial">
+        <p>“AI Hustle Hub completely transformed our content pipeline—more output, less stress.”</p>
+        <p>— Jamie R., Marketing Lead</p>
+      </div>
+      <div class="testimonial">
+        <p>“Automated workflows saved us hours every week. Highly recommend!”</p>
+        <p>— Alex T., Startup Founder</p>
+      </div>
     </section>
 
-    <!-- FAQ Section -->
-    <section id="faq" class="faq">
+    <section id="faq">
       <h2>Frequently Asked Questions</h2>
-      <p><strong>How quickly can I get started?</strong><br>Right away—fill out the form and we’ll be in touch within 24 hours.</p>
-      <p><strong>Do I need technical expertise?</strong><br>Nope! We handle the tech so you can focus on your hustle.</p>
-      <p><strong>What’s the pricing model?</strong><br>Flexible plans: pay-as-you-go or subscription-based. No hidden fees.</p>
+      <div class="faq-item">
+        <h3>How quickly can I get started?</h3>
+        <p>Right away—fill out the form and we’ll be in touch within 24 hours.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Do I need technical expertise?</h3>
+        <p>Nope! We handle the tech so you can focus on your hustle.</p>
+      </div>
+      <div class="faq-item">
+        <h3>What’s the pricing model?</h3>
+        <p>Flexible plans: pay-as-you-go or subscription-based. No hidden fees.</p>
+      </div>
     </section>
-
   </main>
 
   <footer>
-    &copy; 2025 AI Hustle Hub. Built with hustle and heart.
+    <p>© 2025 AI Hustle Hub. Built with hustle and heart.</p>
   </footer>
 </body>
 </html>
