@@ -1,10 +1,170 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>AI Hustle Hub</title>
-  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #0f0f0f;
+      color: #ffffff;
+      line-height: 1.6;
+    }
+
+    header {
+      background-color: #1a1a1a;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #2a2a2a;
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+      color: #00f7ff;
+      font-weight: 800;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 30px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #cccccc;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: #00f7ff;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 80px 20px;
+      background: linear-gradient(145deg, #121212, #1c1c1c);
+    }
+
+    .hero h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: #bbbbbb;
+      margin-bottom: 30px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 28px;
+      background-color: #00f7ff;
+      color: #000;
+      font-weight: 600;
+      border: none;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: #00c2cc;
+    }
+
+    #services {
+      padding: 60px 20px;
+      background-color: #121212;
+      text-align: center;
+    }
+
+    #services h2 {
+      font-size: 2rem;
+      margin-bottom: 40px;
+    }
+
+    .cards {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 30px;
+    }
+
+    .card {
+      background-color: #1c1c1c;
+      padding: 30px;
+      border-radius: 12px;
+      width: 280px;
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.1);
+      transition: transform 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card img {
+      width: 100%;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    .card h3 {
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      font-size: 1rem;
+      color: #bbbbbb;
+    }
+
+    #contact {
+      padding: 60px 20px;
+      text-align: center;
+      background-color: #1a1a1a;
+    }
+
+    #contact h2 {
+      font-size: 2rem;
+      margin-bottom: 30px;
+    }
+
+    form {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    input[type="email"] {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border-radius: 6px;
+      border: none;
+      outline: none;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #0f0f0f;
+      color: #777;
+      font-size: 0.9rem;
+      border-top: 1px solid #2a2a2a;
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -29,11 +189,11 @@
       <h2>Our Services</h2>
       <div class="cards">
         <div class="card">
-          <img src="https://source.unsplash.com/200x200/?ai" alt="AI Icon">
+          <img src="https://source.unsplash.com/400x250/?artificial,intelligence" alt="AI Icon">
           <h3>Content Creation</h3>
-          <p>AI-generated content at your fingertips.</p>
+          <p>AI-generated content at your fingertips. Fast, scalable, and on-brand.</p>
         </div>
-        <!-- Add more cards here if you want -->
+        <!-- Add more cards here -->
       </div>
     </section>
 
@@ -47,7 +207,7 @@
   </main>
 
   <footer>
-    <p>© 2025 AI Hustle Hub</p>
+    <p>© 2025 AI Hustle Hub. Built with hustle & code.</p>
   </footer>
 </body>
 </html>
