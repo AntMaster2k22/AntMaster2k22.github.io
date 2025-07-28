@@ -1,127 +1,102 @@
+// server.js - All-in-one server for HustleSynth AI
 const express = require('express');
 const cors = require('cors');
-const fetch = require('node-fetch');
-const cookieParser = require('cookie-parser');
-const { v4: uuidv4 } = require('uuid');
-
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Store chat sessions in memory (use Redis or database for production)
+// In-memory storage for chat sessions
 const chatSessions = new Map();
 
 // Middleware
 app.use(cors({
-  origin: ['https://hustlesynth.space', 'http://localhost:3000'],
+  origin: true,
   credentials: true
 }));
 app.use(express.json());
-app.use(cookieParser());
 
-// OpenRouter API configuration
-const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
-const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
+// Generate simple session ID
+function generateSessionId() {
+  return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+}
 
-// Initialize or get chat session
-function getOrCreateSession(sessionId) {
-  if (!chatSessions.has(sessionId)) {
-    chatSessions.set(sessionId, {
+// Get or create session
+function getSession(sessionId) {
+  if (!sessionId || !chatSessions.has(sessionId)) {
+    const newSessionId = generateSessionId();
+    chatSessions.set(newSessionId, {
       messages: [],
-      createdAt: new Date(),
-      lastActive: new Date()
+      created: new Date()
     });
+    return { sessionId: newSessionId, session: chatSessions.get(newSessionId) };
   }
-  return chatSessions.get(sessionId);
+  return { sessionId, session: chatSessions.get(sessionId) };
 }
 
-// Clean up old sessions (older than 24 hours)
-function cleanupSessions() {
-  const now = new Date();
-  for (const [sessionId, session] of chatSessions.entries()) {
-    const timeDiff = now - session.lastActive;
-    if (timeDiff > 24 * 60 * 60 * 1000) { // 24 hours
-      chatSessions.delete(sessionId);
-    }
-  }
-}
-
-// Run cleanup every hour
-setInterval(cleanupSessions, 60 * 60 * 1000);
+// Health check
+app.get('/health', (req, res) => {
+  res.json({ 
+    status: 'OK', 
+    timestamp: new Date().toISOString(),
+    message: 'HustleSynth AI Backend is running!'
+  });
+});
 
 // Chat endpoint
 app.post('/api/chat', async (req, res) => {
   try {
-    const { message } = req.body;
+    const { message, sessionId: clientSessionId } = req.body;
     
-    if (!message || typeof message !== 'string') {
+    if (!message) {
       return res.status(400).json({ error: 'Message is required' });
     }
 
-    // Get or create session ID
-    let sessionId = req.cookies.chat_session_id;
-    if (!sessionId) {
-      sessionId = uuidv4();
-      res.cookie('chat_session_id', sessionId, {
-        maxAge: 24 * 60 * 60 * 1000, // 24 hours
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax'
-      });
-    }
+    // Get or create session
+    const { sessionId, session } = getSession(clientSessionId);
 
-    // Get session data
-    const session = getOrCreateSession(sessionId);
-    session.lastActive = new Date();
-
-    // Add user message to history
+    // Add user message
     session.messages.push({
       role: 'user',
       content: message,
       timestamp: new Date()
     });
 
-    // Prepare messages for OpenRouter (keep last 20 messages for context)
-    const contextMessages = session.messages.slice(-20).map(msg => ({
-      role: msg.role,
-      content: msg.content
-    }));
+    // Prepare messages for OpenRouter
+    const messages = [
+      {
+        role: 'system',
+        content: 'You are HustleSynth AI, a helpful AI assistant focused on productivity and business growth. Be engaging, helpful, and professional.'
+      },
+      ...session.messages.slice(-10).map(msg => ({
+        role: msg.role,
+        content: msg.content
+      }))
+    ];
 
-    // Add system message for context
-    const systemMessage = {
-      role: 'system',
-      content: 'You are HustleSynth AI, an AI assistant that helps users with productivity and business growth. Be helpful, engaging, and professional.'
-    };
-
-    const requestBody = {
-      model: 'deepseek-chat-v3-0324:free', // You can change this model
-      messages: [systemMessage, ...contextMessages],
-      max_tokens: 1000,
-      temperature: 0.7,
-      stream: false
-    };
-
-    // Make request to OpenRouter
-    const response = await fetch(OPENROUTER_URL, {
+    // Call OpenRouter API
+    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
+        'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
         'Content-Type': 'application/json',
         'HTTP-Referer': 'https://hustlesynth.space',
         'X-Title': 'HustleSynth AI'
       },
-      body: JSON.stringify(requestBody)
+      body: JSON.stringify({
+        model: 'anthropic/claude-3.5-sonnet',
+        messages: messages,
+        max_tokens: 1000,
+        temperature: 0.7
+      })
     });
 
     if (!response.ok) {
-      const errorData = await response.text();
-      console.error('OpenRouter API error:', errorData);
-      return res.status(500).json({ error: 'AI service temporarily unavailable' });
+      throw new Error(`OpenRouter API error: ${response.status}`);
     }
 
     const data = await response.json();
     const aiResponse = data.choices[0].message.content;
 
-    // Add AI response to history
+    // Add AI response to session
     session.messages.push({
       role: 'assistant',
       content: aiResponse,
@@ -135,40 +110,35 @@ app.post('/api/chat', async (req, res) => {
 
   } catch (error) {
     console.error('Chat error:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ 
+      error: 'Sorry, I encountered an error. Please try again.',
+      details: error.message 
+    });
   }
 });
 
 // Get chat history
-app.get('/api/chat/history', (req, res) => {
-  const sessionId = req.cookies.chat_session_id;
+app.get('/api/chat/:sessionId', (req, res) => {
+  const { sessionId } = req.params;
+  const session = chatSessions.get(sessionId);
   
-  if (!sessionId || !chatSessions.has(sessionId)) {
+  if (!session) {
     return res.json({ messages: [] });
   }
-
-  const session = chatSessions.get(sessionId);
+  
   res.json({ messages: session.messages });
 });
 
-// Clear chat history
-app.delete('/api/chat/history', (req, res) => {
-  const sessionId = req.cookies.chat_session_id;
-  
-  if (sessionId && chatSessions.has(sessionId)) {
-    chatSessions.delete(sessionId);
-  }
-  
-  res.clearCookie('chat_session_id');
+// Clear chat
+app.delete('/api/chat/:sessionId', (req, res) => {
+  const { sessionId } = req.params;
+  chatSessions.delete(sessionId);
   res.json({ success: true });
 });
 
-// Health check
-app.get('/health', (req, res) => {
-  res.json({ status: 'OK', timestamp: new Date().toISOString() });
-});
-
+// Start server
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-  console.log('Make sure to set OPENROUTER_API_KEY environment variable');
+  console.log(`🚀 HustleSynth AI Backend running on port ${PORT}`);
+  console.log(`📋 Health check: http://localhost:${PORT}/health`);
+  console.log(`🔑 OpenRouter API Key: ${process.env.OPENROUTER_API_KEY ? 'Set ✅' : 'Missing ❌'}`);
 });
