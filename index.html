@@ -137,29 +137,13 @@
       color: #00f7ff;
       text-shadow: 0 0 8px #00f7ff;
     }
-    form {
-      max-width: 400px;
-      margin: 0 auto;
-      position: relative;
-    }
-    input[type="email"] {
+    iframe {
+      max-width: 600px;
       width: 100%;
-      padding: 14px;
-      margin-bottom: 20px;
+      margin: 0 auto;
+      display: block;
       border-radius: 6px;
-      border: none;
-      outline: none;
-      box-shadow: inset 0 0 8px rgba(255,255,255,0.1);
-      background: #121212;
-      color: #fff;
-    }
-    footer {
-      text-align: center;
-      padding: 20px;
-      background: #0f0f0f;
-      color: #777;
-      font-size: 0.9rem;
-      border-top: 1px solid #2a2a2a;
+      box-shadow: 0 0 15px rgba(0,255,255,0.2);
     }
   </style>
 </head>
@@ -196,10 +180,13 @@
 
     <section id="contact">
       <h2>Contact Us</h2>
-      <form action="https://formspree.io/f/xzzvgrdk" method="POST">
-        <input type="email" name="email" placeholder="Your Email" required>
-        <button type="submit" class="btn">Submit</button>
-      </form>
+      <iframe src="https://docs.google.com/forms/d/1TjAUDQg5GLd1GsjwtVj5c1xkNpsBU63lqrvv0kDawKs/viewform?embedded=true" 
+              height="600" 
+              frameborder="0" 
+              marginheight="0" 
+              marginwidth="0">
+        Loading…
+      </iframe>
     </section>
   </main>
 
