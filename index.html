@@ -6,160 +6,155 @@
   <title>AI Hustle Hub</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Inter', sans-serif;
-      background-color: #0f0f0f;
+      background: #0f0f0f;
       color: #ffffff;
       line-height: 1.6;
+      overflow-x: hidden;
     }
-
     header {
-      background-color: #1a1a1a;
+      background: #1a1a1a;
       padding: 20px 40px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid #2a2a2a;
+      box-shadow: 0 4px 10px rgba(0,255,255,0.1);
     }
-
     header h1 {
       font-size: 1.8rem;
       color: #00f7ff;
       font-weight: 800;
+      text-shadow: 0 0 8px #00f7ff;
     }
-
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 30px;
-    }
-
+    nav ul { list-style: none; display: flex; gap: 30px; }
     nav a {
       text-decoration: none;
       color: #cccccc;
-      transition: color 0.3s;
+      transition: color 0.3s, text-shadow 0.3s;
     }
-
     nav a:hover {
       color: #00f7ff;
+      text-shadow: 0 0 6px #00f7ff;
     }
-
     .hero {
       text-align: center;
-      padding: 80px 20px;
+      padding: 100px 20px;
       background: linear-gradient(145deg, #121212, #1c1c1c);
+      animation: pulse-bg 8s infinite alternate;
     }
-
+    @keyframes pulse-bg {
+      from { background-position: 0% 0%; }
+      to { background-position: 100% 100%; }
+    }
     .hero h2 {
-      font-size: 2.5rem;
+      font-size: 2.8rem;
       font-weight: 700;
       margin-bottom: 20px;
+      color: #00f7ff;
+      text-shadow: 0 0 12px #00f7ff;
     }
-
     .hero p {
       font-size: 1.2rem;
       color: #bbbbbb;
       margin-bottom: 30px;
+      text-shadow: 0 0 4px rgba(255,255,255,0.3);
     }
-
     .btn {
       display: inline-block;
-      padding: 12px 28px;
+      padding: 14px 32px;
       background-color: #00f7ff;
       color: #000;
       font-weight: 600;
       border: none;
       border-radius: 6px;
       text-decoration: none;
-      transition: all 0.3s ease;
+      transition: all 0.4s ease;
+      box-shadow: 0 0 20px rgba(0,247,255,0.6);
     }
-
     .btn:hover {
       background-color: #00c2cc;
+      box-shadow: 0 0 30px rgba(0,194,204,0.8);
+      transform: translateY(-2px);
     }
-
     #services {
-      padding: 60px 20px;
-      background-color: #121212;
+      padding: 80px 20px;
       text-align: center;
+      background: #121212;
     }
-
     #services h2 {
-      font-size: 2rem;
+      font-size: 2.4rem;
       margin-bottom: 40px;
+      color: #00f7ff;
+      text-shadow: 0 0 8px #00f7ff;
     }
-
     .cards {
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
       gap: 30px;
     }
-
     .card {
       background-color: #1c1c1c;
       padding: 30px;
       border-radius: 12px;
       width: 280px;
-      box-shadow: 0 0 15px rgba(0, 255, 255, 0.1);
-      transition: transform 0.2s ease;
+      box-shadow: 0 0 15px rgba(0,255,255,0.2);
+      transition: transform 0.3s, box-shadow 0.3s;
     }
-
     .card:hover {
-      transform: translateY(-5px);
+      transform: translateY(-8px);
+      box-shadow: 0 0 25px rgba(0,255,255,0.4);
     }
-
     .card img {
       width: 100%;
       border-radius: 8px;
       margin-bottom: 20px;
+      filter: brightness(0.9);
     }
-
     .card h3 {
-      font-size: 1.3rem;
+      font-size: 1.4rem;
       margin-bottom: 10px;
+      color: #00f7ff;
+      text-shadow: 0 0 6px #00f7ff;
     }
-
     .card p {
       font-size: 1rem;
       color: #bbbbbb;
     }
-
     #contact {
-      padding: 60px 20px;
+      padding: 80px 20px;
       text-align: center;
       background-color: #1a1a1a;
     }
-
     #contact h2 {
-      font-size: 2rem;
+      font-size: 2.4rem;
       margin-bottom: 30px;
+      color: #00f7ff;
+      text-shadow: 0 0 8px #00f7ff;
     }
-
     form {
       max-width: 400px;
       margin: 0 auto;
+      position: relative;
     }
-
     input[type="email"] {
       width: 100%;
-      padding: 12px;
+      padding: 14px;
       margin-bottom: 20px;
       border-radius: 6px;
       border: none;
       outline: none;
+      box-shadow: inset 0 0 8px rgba(255,255,255,0.1);
+      background: #121212;
+      color: #fff;
     }
-
     footer {
       text-align: center;
       padding: 20px;
-      background-color: #0f0f0f;
+      background: #0f0f0f;
       color: #777;
       font-size: 0.9rem;
       border-top: 1px solid #2a2a2a;
@@ -182,7 +177,7 @@
     <section id="home" class="hero">
       <h2>Unlock the Power of AI</h2>
       <p>Boost your productivity with AI-powered tools.</p>
-      <a href="#contact" class="btn">Let’s Hustle</a>
+      <a href="#contact" class="btn">Let’s Hustle 🚀</a>
     </section>
 
     <section id="services">
@@ -193,7 +188,7 @@
           <h3>Content Creation</h3>
           <p>AI-generated content at your fingertips. Fast, scalable, and on-brand.</p>
         </div>
-        <!-- Add more cards here -->
+        <!-- More cards can be added similarly -->
       </div>
     </section>
 
