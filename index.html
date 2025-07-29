@@ -129,98 +129,75 @@
     const message = chatInput.value.trim();
     if (!message) return;
 
-    // Append user message
     appendMessage(message, true);
-
-    // Clear input
     chatInput.value = '';
     
-    // Show “typing...” or loading indicator (optional)
-    appendMessage('...', false);
-    const loadingMsg = chatMessages.lastChild;
+    const loadingMsg = document.createElement('p');
+    loadingMsg.textContent = 'HustleSynth: ...';
+    loadingMsg.className = 'text-gray-800 mb-2 italic';
+    chatMessages.appendChild(loadingMsg);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
 
     try {
-      const response = await fetch('https://hustlesynth-github-io.onrender.com/api/chat', {
-        method: 'POST',
-        headers: {
-          'accept': '*/*',
-          'content-type': 'application/json',
-          'cache-control': 'no-cache',
-          'pragma': 'no-cache',
-        },
-        body: JSON.stringify({
-          message,
-          sessionId
-        }),
-        mode: 'cors'
-      });
+        const response = await fetch('https://hustlesynth-github-io.onrender.com/api/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                message,
+                sessionId
+            }),
+            mode: 'cors'
+        });
 
-      const data = await response.json();
+        // Always remove the "typing..." indicator
+        chatMessages.removeChild(loadingMsg);
 
-      // Remove loading indicator
-      chatMessages.removeChild(loadingMsg);
+        if (!response.ok) {
+            // Handle HTTP errors like 404 or 500
+            appendMessage(`Error: The server responded with a status of ${response.status}. Please check the API endpoint.`, false);
+            return;
+        }
+        
+        const data = await response.json();
 
-      // Append AI reply
-      if (data && data.reply) {
-        appendMessage(data.reply, false);
-      } else {
-        appendMessage('Oops, no response from HustleSynth. Try again later.', false);
-      }
+        // Log the actual response to the console to see its structure
+        console.log('Server response:', data);
 
-      // Update sessionId if your backend provides it
-      if (data.sessionId) {
-        sessionId = data.sessionId;
-      }
+        // IMPORTANT: Check the console to see the real key for the reply.
+        // If the key is 'answer' or 'response', change 'data.reply' to 'data.answer' etc.
+        const reply = data.reply || data.answer || data.message || data.response;
+
+        if (reply) {
+            appendMessage(reply, false);
+        } else {
+            appendMessage('Oops, the response format was unexpected. Check the console.', false);
+        }
+
+        if (data.sessionId) {
+            sessionId = data.sessionId;
+        }
+
     } catch (error) {
-      chatMessages.removeChild(loadingMsg);
-      appendMessage('Error connecting to HustleSynth. Please try again.', false);
-      console.error('Chat fetch error:', error);
+        // Remove loading indicator on error too
+        if (chatMessages.contains(loadingMsg)) {
+            chatMessages.removeChild(loadingMsg);
+        }
+        appendMessage('Error connecting to HustleSynth. Please try again.', false);
+        console.error('Chat fetch error:', error);
     }
-  });
-
+});
   newChatBtn.addEventListener('click', () => {
     sessionId = null; // reset session if applicable
     chatMessages.innerHTML = `<p class="text-gray-800">Hello! I'm HustleSynth AI. How can I help you boost your productivity today? 🚀</p>`;
   });
 </script>
-
-
-<script>
-  const chatForm = document.getElementById('chatForm');
-  const chatInput = document.getElementById('chatInput');
-  const chatMessages = document.getElementById('chatMessages');
-  const newChatBtn = document.getElementById('newChatBtn');
-
-  chatForm.addEventListener('submit', e => {
-    e.preventDefault();
-    const message = chatInput.value.trim();
-    if (!message) return;
-
-    // Append user message
-    const userMsg = document.createElement('p');
-    userMsg.textContent = `You: ${message}`;
-    userMsg.className = 'text-gray-900 mb-2';
-    chatMessages.appendChild(userMsg);
-
-    // Clear input
-    chatInput.value = '';
-
-    // Scroll to bottom
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-
-    // TODO: Add AI response logic here or API call
-  });
-
-  newChatBtn.addEventListener('click', () => {
-    chatMessages.innerHTML = `<p class="text-gray-800">Hello! I'm HustleSynth AI. How can I help you boost your productivity today? 🚀</p>`;
-  });
-</script>
-
     </div>
-
     <footer class="bg-white py-6">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <p class="text-gray-600">© 2025 HustleSynth AI. Built with hustle &amp; code.</p>
         </div>
     </footer>
+	<script src="chat.js"></script>
 </body></html>
