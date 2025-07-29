@@ -1,6 +1,6 @@
-// server.js - All-in-one server for HustleSynth AI
 const express = require('express');
 const cors = require('cors');
+const path = require('path'); // Added for static file serving
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -13,6 +13,7 @@ app.use(cors({
   credentials: true
 }));
 app.use(express.json());
+app.use(express.static(path.join(__dirname, '.'))); // Serve static files from root directory
 
 // Generate simple session ID
 function generateSessionId() {
