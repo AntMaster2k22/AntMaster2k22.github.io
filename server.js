@@ -1,68 +1,145 @@
-const chatForm = document.getElementById('chatForm');
-const chatInput = document.getElementById('chatInput');
-const chatMessages = document.getElementById('chatMessages');
-const newChatBtn = document.getElementById('newChatBtn');
+const express = require('express');
+const cors = require('cors');
+const path = require('path'); // Added for static file serving
+const app = express();
+const PORT = process.env.PORT || 3000;
 
-let sessionId = null; // Track session across requests
+// In-memory storage for chat sessions
+const chatSessions = new Map();
 
-// Utility to append messages in chat box
-function appendMessage(text, isUser = false) {
-  const p = document.createElement('p');
-  p.textContent = isUser ? `You: ${text}` : `HustleSynth: ${text}`;
-  p.className = isUser
-    ? 'text-gray-900 mb-2 font-semibold'
-    : 'text-gray-800 mb-2 italic';
-  chatMessages.appendChild(p);
-  chatMessages.scrollTop = chatMessages.scrollHeight;
+// Middleware
+app.use(cors({
+  origin: true,
+  credentials: true
+}));
+app.use(express.json());
+app.use(express.static(path.join(__dirname, '.'))); // Serve static files from root directory
+
+// Generate simple session ID
+function generateSessionId() {
+  return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
 }
 
-// Handle form submit (send message)
-chatForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const message = chatInput.value.trim();
-  if (!message) return;
+// Get or create session
+function getSession(sessionId) {
+  if (!sessionId || !chatSessions.has(sessionId)) {
+    const newSessionId = generateSessionId();
+    chatSessions.set(newSessionId, {
+      messages: [],
+      created: new Date()
+    });
+    return { sessionId: newSessionId, session: chatSessions.get(newSessionId) };
+  }
+  return { sessionId, session: chatSessions.get(sessionId) };
+}
 
-  appendMessage(message, true);
-  chatInput.value = '';
+// Health check
+app.get('/health', (req, res) => {
+  res.json({ 
+    status: 'OK', 
+    timestamp: new Date().toISOString(),
+    message: 'HustleSynth AI Backend is running!'
+  });
+});
 
-  // Show typing indicator
-  appendMessage('...', false);
-  const loadingMsg = chatMessages.lastChild;
-
+// Chat endpoint
+app.post('/api/chat', async (req, res) => {
   try {
-    const response = await fetch('https://hustlesynth-github-io.onrender.com/api/chat', {
-      method: 'POST',
-      headers: {
-        'accept': '*/*',
-        'content-type': 'application/json',
-        'cache-control': 'no-cache',
-        'pragma': 'no-cache',
-      },
-      body: JSON.stringify({ message, sessionId }),
-      mode: 'cors',
+    const { message, sessionId: clientSessionId } = req.body;
+    
+    if (!message) {
+      return res.status(400).json({ error: 'Message is required' });
+    }
+
+    // Get or create session
+    const { sessionId, session } = getSession(clientSessionId);
+
+    // Add user message
+    session.messages.push({
+      role: 'user',
+      content: message,
+      timestamp: new Date()
     });
 
-    const data = await response.json();
+    // Prepare messages for OpenRouter
+    const messages = [
+      {
+        role: 'system',
+        content: 'You are HustleSynth AI, a helpful AI assistant focused on productivity and business growth. Be engaging, helpful, and professional.'
+      },
+      ...session.messages.slice(-10).map(msg => ({
+        role: msg.role,
+        content: msg.content
+      }))
+    ];
 
-    // Remove typing indicator
-    chatMessages.removeChild(loadingMsg);
+    // Call OpenRouter API
+    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
+        'Content-Type': 'application/json',
+        'HTTP-Referer': 'https://hustlesynth.space',
+        'X-Title': 'HustleSynth AI'
+      },
+      body: JSON.stringify({
+        model: 'deepseek/deepseek-chat-v3-0324:free',
+        messages: messages,
+        max_tokens: 1000,
+        temperature: 0.7
+      })
+    });
 
-    if (data && data.response) {
-      appendMessage(data.response, false);
-      sessionId = data.sessionId; // update session for continuity
-    } else {
-      appendMessage('Oops, no response from HustleSynth. Try again later.', false);
+    if (!response.ok) {
+      throw new Error(`OpenRouter API error: ${response.status}`);
     }
+
+    const data = await response.json();
+    const aiResponse = data.choices[0].message.content;
+
+    // Add AI response to session
+    session.messages.push({
+      role: 'assistant',
+      content: aiResponse,
+      timestamp: new Date()
+    });
+
+    res.json({
+      response: aiResponse,
+      sessionId: sessionId
+    });
+
   } catch (error) {
-    chatMessages.removeChild(loadingMsg);
-    appendMessage('Error connecting to HustleSynth. Please try again.', false);
-    console.error('Chat fetch error:', error);
+    console.error('Chat error:', error);
+    res.status(500).json({ 
+      error: 'Sorry, I encountered an error. Please try again.',
+      details: error.message 
+    });
   }
 });
 
-// Reset chat & session on New Chat button
-newChatBtn.addEventListener('click', () => {
-  sessionId = null;
-  chatMessages.innerHTML = `<p class="text-gray-800">Hello! I'm HustleSynth AI. How can I help you boost your productivity today? 🚀</p>`;
-  chatInput.focus();
+// Get chat history
+app.get('/api/chat/:sessionId', (req, res) => {
+  const { sessionId } = req.params;
+  const session = chatSessions.get(sessionId);
+  
+  if (!session) {
+    return res.json({ messages: [] });
+  }
+  
+  res.json({ messages: session.messages });
+});
+
+// Clear chat
+app.delete('/api/chat/:sessionId', (req, res) => {
+  const { sessionId } = req.params;
+  chatSessions.delete(sessionId);
+  res.json({ success: true });
+});
+
+// Start server
+app.listen(PORT, () => {
+  console.log(`🚀 HustleSynth AI Backend running on port ${PORT}`);
+  console.log(`📋 Health check: http://localhost:${PORT}/health`);
+  console.log(`🔑 OpenRouter API Key: ${process.env.OPENROUTER_API_KEY ? 'Set ✅' : 'Missing ❌'}`);
 });
