@@ -905,5 +905,80 @@
             }
         });
     </script>
+	<script>
+// Optional: Add a popup notification for first-time visitors
+function showPrivacyNotice() {
+    const hasSeenNotice = localStorage.getItem('hustlesynth-privacy-notice');
+    
+    if (!hasSeenNotice) {
+        const notice = document.createElement('div');
+        notice.className = 'privacy-notice';
+        notice.innerHTML = `
+            <div class="privacy-notice-content">
+                <p>By using HustleSynth, you agree to our 
+                    <a href="/privacy.html">Privacy Policy</a> and 
+                    <a href="/tos.html">Terms of Service</a>.
+                </p>
+                <button onclick="acceptPrivacyNotice()">Got it</button>
+            </div>
+        `;
+        document.body.appendChild(notice);
+    }
+}
+
+function acceptPrivacyNotice() {
+    localStorage.setItem('hustlesynth-privacy-notice', 'true');
+    document.querySelector('.privacy-notice').remove();
+}
+
+// Add CSS for the notice
+const style = document.createElement('style');
+style.textContent = `
+.privacy-notice {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    background: #1a1a2e;
+    color: white;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.privacy-notice-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.privacy-notice a {
+    color: #60a5fa;
+    text-decoration: underline;
+}
+
+.privacy-notice button {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.privacy-notice button:hover {
+    background: #1d4ed8;
+}
+`;
+document.head.appendChild(style);
+
+// Call on page load
+document.addEventListener('DOMContentLoaded', showPrivacyNotice);
+</script>
 </body>
 </html>
