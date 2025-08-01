@@ -532,6 +532,107 @@
             }
         }
     </style>
+	<style>
+.footer {
+    background-color: #1a1a2e;
+    color: #ffffff;
+    padding: 3rem 0 1.5rem;
+    margin-top: 5rem;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.footer-section h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #ffffff;
+}
+
+.footer-section p {
+    color: #b8bec9;
+    margin-bottom: 1rem;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section li {
+    margin-bottom: 0.5rem;
+}
+
+.footer-section a {
+    color: #b8bec9;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-section a:hover {
+    color: #ffffff;
+}
+
+.social-links {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.social-links a {
+    font-size: 1.25rem;
+    color: #b8bec9;
+    transition: color 0.3s ease;
+}
+
+.social-links a:hover {
+    color: #ffffff;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 2rem;
+    margin-top: 2rem;
+    border-top: 1px solid #2d3748;
+    color: #b8bec9;
+    font-size: 0.875rem;
+}
+
+.footer-bottom .legal-links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 1rem;
+}
+
+.footer-bottom .legal-links a {
+    color: #b8bec9;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-bottom .legal-links a:hover {
+    color: #ffffff;
+}
+
+@media (max-width: 768px) {
+    .footer-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .footer-bottom .legal-links {
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+}
+</style>
 </head>
 <body>
     <!-- Navigation -->
@@ -668,49 +769,71 @@
     </section>
 
     <!-- Footer -->
-    <footer>
-        <div class="footer-container">
-            <div class="footer-section">
-                <h4>HustleSynth</h4>
-                <p>The unified AI platform for developers</p>
-                <div class="social-links">
-                    <a href="https://x.com/hustlesynth" target="_blank" rel="noopener noreferrer">
-                        <i class="fab fa-x-twitter"></i>
-                    </a>
-                    <a href="https://www.linkedin.com/in/hustlesynth/" target="_blank" rel="noopener noreferrer">
-                        <i class="fab fa-linkedin"></i>
-                    </a>
-                    <a href="https://github.com/HustleSynth" target="_blank" rel="noopener noreferrer">
-                        <i class="fab fa-github"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="footer-section">
-                <h4>Product</h4>
-                <a href="#features">Features</a>
-                <a href="#pricing">Pricing</a>
-                <a href="https://docs.hustlesynth.space">Documentation</a>
-                <a href="https://panel.hustlesynth.space">Dashboard</a>
-            </div>
-            <div class="footer-section">
-                <h4>Resources</h4>
-                <a href="https://docs.hustlesynth.space/api">API Reference</a>
-                <a href="https://chat.hustlesynth.space">Chat Demo</a>
-                <a href="https://status.hustlesynth.space">Status Page</a>
-                <a href="https://github.com/HustleSynth">GitHub</a>
-            </div>
-            <div class="footer-section">
-                <h4>Company</h4>
-                <a href="/about">About Us</a>
-                <a href="/privacy">Privacy Policy</a>
-                <a href="/terms">Terms of Service</a>
-                <a href="mailto:support@hustlesynth.space">Contact</a>
+    <footer class="footer">
+    <div class="footer-content">
+        <div class="footer-section">
+            <h4>HustleSynth</h4>
+            <p>The unified AI platform for developers</p>
+            <div class="social-links">
+                <a href="https://github.com/HustleSynth" aria-label="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://twitter.com/HustleSynth" aria-label="Twitter">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="https://discord.gg/hustlesynth" aria-label="Discord">
+                    <i class="fab fa-discord"></i>
+                </a>
+                <a href="https://linkedin.com/company/hustlesynth" aria-label="LinkedIn">
+                    <i class="fab fa-linkedin"></i>
+                </a>
             </div>
         </div>
-        <div class="footer-bottom">
-            <p>&copy; 2025 HustleSynth. All rights reserved.</p>
+        
+        <div class="footer-section">
+            <h4>Products</h4>
+            <ul>
+                <li><a href="https://panel.hustlesynth.space">Dashboard</a></li>
+                <li><a href="https://chat.hustlesynth.space">AI Chat Interface</a></li>
+                <li><a href="https://docs.hustlesynth.io">API Documentation</a></li>
+                <li><a href="#api-pricing">API Pricing</a></li>
+                <li><a href="#models">Available Models</a></li>
+            </ul>
         </div>
-    </footer>
+        
+        <div class="footer-section">
+            <h4>Resources</h4>
+            <ul>
+                <li><a href="https://docs.hustlesynth.io#introduction">Getting Started</a></li>
+                <li><a href="https://docs.hustlesynth.io#examples">Code Examples</a></li>
+                <li><a href="https://status.hustlesynth.space">System Status</a></li>
+                <li><a href="/blog">Blog</a></li>
+                <li><a href="/changelog">Changelog</a></li>
+            </ul>
+        </div>
+        
+        <div class="footer-section">
+            <h4>Support</h4>
+            <ul>
+                <li><a href="mailto:support@hustlesynth.space">Email Support</a></li>
+                <li><a href="https://discord.gg/hustlesynth">Discord Community</a></li>
+                <li><a href="https://docs.hustlesynth.io#troubleshooting">Troubleshooting</a></li>
+                <li><a href="/faq">FAQ</a></li>
+                <li><a href="/contact">Contact Us</a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="footer-bottom">
+        <div class="legal-links">
+            <a href="/privacy.html">Privacy Policy</a>
+            <a href="/tos.html">Terms of Service</a>
+            <a href="/cookies">Cookie Policy</a>
+            <a href="/acceptable-use">Acceptable Use Policy</a>
+        </div>
+        <p>&copy; 2025 HustleSynth Technologies INC. All rights reserved.</p>
+    </div>
+</footer>
 
     <script>
         // Dark Mode Toggle
